@@ -1,14 +1,17 @@
-import datetime as dt
 from flask import Flask, request, jsonify
 import requests
 from dotenv import load_dotenv
 import os
 import base64
 import json
+from flask_cors import CORS
+
 
 load_dotenv()
 
 app = Flask(__name__)
+allowed_origins = 
+CORS(app, origins=allowed_origins)
 
 WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
 WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
