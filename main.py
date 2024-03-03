@@ -34,86 +34,80 @@ def get_auth_header(token):
     return {"Authorization": "Bearer " + token}
 
 def search_for_playlist(token, categories):
-    url = "https://api.spotify.com/v1/browse/search"
+    url = "https://api.spotify.com/v1/search"
     headers = get_auth_header(token)
     query = f"?q={categories}&type=playlist&limit=1"
 
     query_url = url + query
     result = requests.get(query_url, headers=headers)
     json_result = json.loads(result.content)["playlists"]["items"]
-    #print(json_result)
+    if len(json_result) == 0:
+        return ("Playlists not found")
     return json_result
 
 
 token = get_token()
 
 weather_spotify_dict = {
-    "thunderstorm": ["intense", "dramatic", "stormy"],
-    "thunderstorm with light rain": ["lightning", "showers", "electric"],
-    "thunderstorm with rain": ["rainy", "thunder", "storm"],
-    "thunderstorm with heavy rain": ["heavy rain", "thunder", "stormy"],
-    "light thunderstorm": ["gentle", "rumbling", "light storm"],
-    "thunderstorm": ["thunder", "storm", "lightning"],
-    "heavy thunderstorm": ["heavy", "thunder", "storm"],
-    "ragged thunderstorm": ["ragged", "thunder", "stormy"],
-    "thunderstorm with light drizzle": ["light drizzle", "thunder", "storm"],
-    "thunderstorm with drizzle": ["drizzle", "thunder", "storm"],
-    "thunderstorm with heavy drizzle": ["heavy drizzle", "thunder", "storm"],
-    "drizzle": ["light rain", "gentle", "misty"],
-    "light intensity drizzle": ["light drizzle", "gentle", "misty"],
-    "drizzle": ["drizzle", "gentle rain", "misty"],
-    "heavy intensity drizzle": ["heavy drizzle", "heavy rain", "wet"],
-    "light intensity drizzle rain": ["light drizzle rain", "gentle rain", "misty"],
-    "drizzle rain": ["drizzle rain", "rainy", "wet"],
-    "heavy intensity drizzle rain": ["heavy drizzle rain", "heavy rain", "wet"],
-    "shower rain and drizzle": ["shower rain", "drizzle", "rainy"],
-    "heavy shower rain and drizzle": ["heavy shower rain", "heavy drizzle", "stormy"],
-    "shower drizzle": ["shower drizzle", "rainy", "misty"],
-    "rain": ["rainy", "soothing", "wet"],
-    "light rain": ["light rain", "gentle", "calm"],
-    "moderate rain": ["moderate rain", "steady", "wet"],
-    "heavy intensity rain": ["heavy rain", "intense", "pouring"],
-    "very heavy rain": ["very heavy rain", "torrential", "stormy"],
-    "extreme rain": ["extreme rain", "intense", "stormy"],
-    "freezing rain": ["freezing rain", "icy", "cold"],
-    "light intensity shower rain": ["light shower rain", "gentle rain", "calm"],
-    "shower rain": ["shower rain", "rainy", "wet"],
-    "heavy intensity shower rain": ["heavy shower rain", "intense rain", "stormy"],
-    "ragged shower rain": ["ragged shower rain", "stormy", "wet"],
-    "snow": ["winter", "snowy", "chill"],
-    "light snow": ["light snow", "gentle", "winter"],
-    "snow": ["snow", "winter wonderland", "cold"],
-    "heavy snow": ["heavy snow", "winter", "stormy"],
-    "sleet": ["sleet", "icy", "cold"],
-    "light shower sleet": ["light shower sleet", "icy", "cold"],
-    "shower sleet": ["shower sleet", "icy", "cold"],
-    "light rain and snow": ["light rain and snow", "winter", "wet"],
-    "rain and snow": ["rain and snow", "winter", "wet"],
-    "light shower snow": ["light shower snow", "gentle snow", "calm"],
-    "shower snow": ["shower snow", "snowy", "winter"],
-    "heavy shower snow": ["heavy shower snow", "heavy snow", "stormy"],
-    "atmosphere": ["atmospheric", "mystical", "ambient"],
-    "mist": ["mystical", "serene", "misty"],
-    "smoke": ["atmospheric", "ambient", "smoky"],
-    "haze": ["dreamy", "calm", "hazy"],
-    "dust": ["desert", "dry", "dusty"],
-    "sand/dust whirls": ["sand/dust whirls", "windy", "desert"],
-    "fog": ["mysterious", "ethereal", "foggy"],
-    "sand": ["warm", "beachy", "sandy"],
-    "dust": ["dusty", "dry", "arid"],
-    "volcanic ash": ["volcanic ash", "gray", "hazy"],
-    "squalls": ["windy", "turbulent", "squally"],
-    "tornado": ["tornado", "whirlwind", "chaotic"],
-    "clear sky (day)": ["clear", "bright", "sunny"],
-    "clear sky (night)": ["clear", "starry", "tranquil"],
-    "few clouds (day)": ["partly cloudy", "scattered", "sunny spells"],
-    "few clouds (night)": ["starry", "clear", "calm"],
-    "scattered clouds (day)": ["partly cloudy", "sunny", "scattered"],
-    "scattered clouds (night)": ["starry", "cloudy", "calm"],
-    "broken clouds (day)": ["cloudy", "overcast", "gloomy"],
-    "broken clouds (night)": ["cloudy", "overcast", "calm"],
-    "overcast clouds (day)": ["cloudy", "overcast", "gloomy"],
-    "overcast clouds (night)": ["cloudy", "overcast", "calm"]
+    "thunderstorm": "thunderstorm mix",
+    "thunderstorm with light rain": "thunderstorm mix",
+    "thunderstorm with rain": "thunderstorm mix",
+    "thunderstorm with heavy rain": "thunderstorm mix",
+    "light thunderstorm": "thunderstorm mix",
+    "thunderstorm": "thunderstorm mix",
+    "heavy thunderstorm": "thunderstorm mix",
+    "ragged thunderstorm": "thunderstorm mix",
+    "thunderstorm with light drizzle": "thunderstorm mix",
+    "thunderstorm with drizzle": "thunderstorm mix",
+    "thunderstorm with heavy drizzle": "thunderstorm mix",
+    "drizzle": "calming drizzle",
+    "light intensity drizzle": "serene",
+    "drizzle": "soothing",
+    "heavy intensity drizzle": "rain",
+    "light intensity drizzle rain": "rain",
+    "drizzle rain": "calming rain",
+    "heavy intensity drizzle rain": "rain drizzle",
+    "shower rain and drizzle": "rain shower",
+    "heavy shower rain and drizzle": "heavy rain",
+    "shower drizzle": "rainy day",
+    "rain": "rainy day",
+    "light rain": "calming rain",
+    "moderate rain": "comforting rain",
+    "heavy intensity rain": "heavy rain",
+    "very heavy rain": "heavy rain",
+    "extreme rain": "heavy rain",
+    "freezing rain": "cold rain",
+    "light intensity shower rain": "light rain",
+    "shower rain": "rain shower",
+    "heavy intensity shower rain": "heavy rain",
+    "ragged shower rain": "rain shower",
+    "snow": "snow day",
+    "light snow": "snow day",
+    "heavy snow": "snowstorm",
+    "sleet": "wet snow",
+    "light shower sleet": "light snow",
+    "shower sleet": "wet snow",
+    "light rain and snow": "wet snow",
+    "rain and snow": "wet snow",
+    "light shower snow": "snow storm",
+    "shower snow": "snow day",
+    "heavy shower snow": "snow day",
+    "mist": "misty",
+    "smoke": "smokey",
+    "haze": "dreamy",
+    "dust": "hazy",
+    "sand/dust whirls": "hazy",
+    "fog": "mysterious",
+    "sand": "sandy",
+    "dust": "dusty",
+    "volcanic ash": "hazy",
+    "squalls": "stormy",
+    "tornado": "gusty",
+    "clear sky": "sunny day",
+    "few clouds": "sunny",
+    "scattered clouds": "sunny",
+    "broken clouds": "cloudy",
+    "overcast clouds": "gloomy"
 }
 
 
@@ -123,9 +117,8 @@ def get_weather(city):
     response = requests.get(url).json()
     description = response["weather"][0]["description"]
     search_items = weather_spotify_dict.get(description, [])
-    playlist = search_for_playlist(token, "hello")
-    #return jsonify(description), 200
-    return jsonify({"description": description, "serach_items": search_items, "playlists": playlist})
+    playlist = search_for_playlist(token, search_items)
+    return jsonify({"response": response, "serach_items": search_items, "playlists": playlist})
 
 
 if __name__ == "__main__":
