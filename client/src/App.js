@@ -6,7 +6,6 @@ import search_icon from "./Assets/search.png";
 
 function App() {
   const [error, setError] = useState("");
-  const [initial, setInitial] = useState(true);
   const [city, setCity] = useState("");
   const [surl, setSurl] = useState("");
   const [siconUrl, setSiconUrl] = useState("");
@@ -32,7 +31,6 @@ function App() {
         setError(data.error);
       } else {
         setError("");
-        setInitial(false);
         const kelvinTemperature = data.response.main.temp;
         const celsiusTemperature = kelvinTemperature - 273.15;
         setWicon(
