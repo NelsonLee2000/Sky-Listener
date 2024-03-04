@@ -10,8 +10,7 @@ from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
-allowed_origins = 
-CORS(app, origins=allowed_origins)
+CORS(app)
 
 WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
 WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
@@ -75,7 +74,7 @@ weather_spotify_dict = {
     "shower drizzle": "rainy day",
     "rain": "rainy day",
     "light rain": "calming rain",
-    "moderate rain": "comforting rain",
+    "moderate rain": "rainy day",
     "heavy intensity rain": "heavy rain",
     "very heavy rain": "heavy rain",
     "extreme rain": "heavy rain",
@@ -87,15 +86,15 @@ weather_spotify_dict = {
     "snow": "snow day",
     "light snow": "snow day",
     "heavy snow": "snowstorm",
-    "sleet": "wet snow",
+    "sleet": "light snow",
     "light shower sleet": "light snow",
-    "shower sleet": "wet snow",
-    "light rain and snow": "wet snow",
-    "rain and snow": "wet snow",
+    "shower sleet": "light snow",
+    "light rain and snow": "cold rain",
+    "rain and snow": "cold rain",
     "light shower snow": "snow storm",
     "shower snow": "snow day",
     "heavy shower snow": "snow day",
-    "mist": "misty",
+    "mist": "misty rain",
     "smoke": "smokey",
     "haze": "dreamy",
     "dust": "hazy",
@@ -116,12 +115,15 @@ weather_spotify_dict = {
 
 @app.route("/get-weather/<city>")
 def get_weather(city):
-    url = WEATHER_BASE_URL + "appid=" + WEATHER_API_KEY + "&q=" + city
-    response = requests.get(url).json()
-    description = response["weather"][0]["description"]
-    search_items = weather_spotify_dict.get(description, [])
-    playlist = search_for_playlist(token, search_items)
-    return jsonify({"response": response, "serach_items": search_items, "playlists": playlist})
+        try:
+            url = WEATHER_BASE_URL + "appid=" + WEATHER_API_KEY + "&q=" + city
+            response = requests.get(url).json()
+            description = response["weather"][0]["description"]
+            search_items = weather_spotify_dict.get(description, [])
+            playlist = search_for_playlist(token, search_items)
+            return jsonify({"response": response, "search_items": search_items, "playlists": playlist})
+        except Exception as e:
+            return jsonify({"error": str(e)})
 
 
 if __name__ == "__main__":
