@@ -118,10 +118,13 @@ def get_weather(city):
         try:
             url = WEATHER_BASE_URL + "appid=" + WEATHER_API_KEY + "&q=" + city
             response = requests.get(url).json()
-            description = response["weather"][0]["description"]
-            search_items = weather_spotify_dict.get(description, [])
-            playlist = search_for_playlist(token, search_items)
-            return jsonify({"response": response, "search_items": search_items, "playlists": playlist})
+            if "weather" in response:
+                description = response["weather"][0]["description"]
+                search_items = weather_spotify_dict.get(description, [])
+                playlist = search_for_playlist(token, search_items)
+                return jsonify({"response": response, "search_items": search_items, "playlists": playlist})
+            else:
+                return jsonify({"error": response["message"]})
         except Exception as e:
             return jsonify({"error": str(e)})
 
