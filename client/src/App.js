@@ -71,9 +71,9 @@ function App() {
       ) : (
         <div className="mainbody">
           <div className="wdiv">
+            <div className="city">{wtitle}</div>
             <img src={wicon} className="wicon"></img>
             <div className="temp">{temp}</div>
-            <div className="city">{wtitle}</div>
           </div>
           <div className="sdiv">
             <div className="playlisttitle">{title}</div>
@@ -85,7 +85,7 @@ function App() {
               />
             </div>
             <div>
-              <a href={surl} className="playlistlink">
+              <a href={surl} className="playlistlink" target="_blank">
                 {surl}
               </a>
             </div>

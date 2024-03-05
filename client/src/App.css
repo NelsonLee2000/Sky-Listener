@@ -58,40 +58,49 @@
 
 .mainbody {
   display:flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .wdiv {
   width: 50%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 10vh;
+  width: 50vw;
+ 
 }
 
 .wicon {
-  width: 300px;
-  height: 300px;
+  width: 100px;
+  height: 100px;
 }
 
 .temp {
   color: black;
-  font-size: 120px;
+  font-size: 40px;
   font-weight: 400;
 }
 
 .city {
   color: black;
-  font-size: 60px;
+  font-size: 40px;
   font-weight: 400;
 }
 
 .sdiv {
-  width: 50%;
+  width: 40vw;
+  height: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: top;
+  margin-top: 25px;
+  padding-top: 20px;
   text-align: center;
+  border: rgb(199, 239, 250) 3px solid;
+  min-width: 500px;
 }
 
 .playlistimage {
