@@ -20,7 +20,7 @@ function App() {
   };
 
   async function fetchPlaylist(city) {
-    return await axios.get(`http://127.0.0.1:5000/get-weather/${city}`);
+    return await axios.get(`https://sky-listener.onrender.com/get-weather/${city}`);
   }
 
   const onSubmit = async (e) => {
