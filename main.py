@@ -128,6 +128,10 @@ def get_weather(city):
         except Exception as e:
             return jsonify({"error": str(e)})
 
+@app.route("/ping")
+def pingme():
+    return "pinged"
+
 
 if __name__ == "__main__":
     app.run(debug=True)
