@@ -42,9 +42,7 @@ def search_for_playlist(token, categories):
 
     query_url = url + query
     result = requests.get(query_url, headers=headers)
-    json_result = json.loads(result.content)["playlists"]["items"]
-    if len(json_result) == 0:
-        return ("Playlists not found")
+    json_result = json.loads(result.content)
     return json_result
 
 
@@ -116,15 +114,18 @@ weather_spotify_dict = {
 @app.route("/get-weather/<city>")
 def get_weather(city):
         try:
+            global token
             url = WEATHER_BASE_URL + "appid=" + WEATHER_API_KEY + "&q=" + city
             response = requests.get(url).json()
-            if "weather" in response:
-                description = response["weather"][0]["description"]
-                search_items = weather_spotify_dict.get(description, [])
+            description = response["weather"][0]["description"]
+            search_items = weather_spotify_dict.get(description, [])
+            playlist = search_for_playlist(token, search_items)
+            if "weather" not in response:
+                return jsonify({"error": "Weather Unavailable"})
+            if "error" in playlist:
+                token = get_token()
                 playlist = search_for_playlist(token, search_items)
-                return jsonify({"response": response, "search_items": search_items, "playlists": playlist})
-            else:
-                return jsonify({"error": response["message"]})
+            return jsonify({"response": response, "search_items": search_items, "playlists": playlist["playlists"]["items"]})
         except Exception as e:
             return jsonify({"error": str(e)})
 
