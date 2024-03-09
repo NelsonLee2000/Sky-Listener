@@ -117,11 +117,11 @@ def get_weather(city):
             global token
             url = WEATHER_BASE_URL + "appid=" + WEATHER_API_KEY + "&q=" + city
             response = requests.get(url).json()
+            if "weather" not in response:
+                return jsonify({"error": response["message"]})
             description = response["weather"][0]["description"]
             search_items = weather_spotify_dict.get(description, [])
             playlist = search_for_playlist(token, search_items)
-            if "weather" not in response:
-                return jsonify({"error": "Weather Unavailable"})
             if "error" in playlist:
                 token = get_token()
                 playlist = search_for_playlist(token, search_items)
