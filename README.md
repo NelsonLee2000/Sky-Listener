@@ -4,7 +4,7 @@ Sky Listener is a web application that enhances your music listening experience 
 
 ## Why?
 
-Sky Listener takes the hassle out of finding the perfect playlist for your current weather. Instead of manually searching for mood-appropriate music, Sky Listener does the work for you when you input your city name.
+Sky Listener takes the hassle out of finding the perfect playlist for any given day. Instead of manually searching for mood and weather-appropriate music, Sky Listener does the work for you when you input your city name.
 
 ## Features
 
