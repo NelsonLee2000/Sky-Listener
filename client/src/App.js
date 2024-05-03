@@ -37,7 +37,7 @@ function App() {
           `https://openweathermap.org/img/wn/${data.response.weather[0].icon}@2x.png`
         );
         setTemp(celsiusTemperature.toFixed(0) + "°C");
-        setWtitle(data.response.name);
+        setWtitle(`${data.response.name}, ${data.response.sys.country}`);
         setSurl(data.playlists[0].external_urls.spotify);
         setTitle(data.playlists[0].name);
         setSiconUrl(data.playlists[0].images[0].url);
