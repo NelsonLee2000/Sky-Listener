@@ -1,8 +1,9 @@
 import React from "react";
 import "./App.css";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import search_icon from "./Assets/search.png";
+import { SearchResultsList } from "./components/SearchResultsList";
 
 function App() {
   const [error, setError] = useState("");
@@ -13,14 +14,38 @@ function App() {
   const [wicon, setWicon] = useState("");
   const [wtitle, setWtitle] = useState("");
   const [temp, setTemp] = useState("");
+  const [autoComplete, setAutoComplete] = useState([]);
 
   const onChange = (e) => {
     setError("");
     setCity(e.target.value);
   };
 
+  useEffect(() => {
+    if (city) {
+      fetchAutoComplete(city);
+    }
+  }, [city]);
+
+  const selectResult = (select) => {
+    setCity(select);
+  };
+
+  async function fetchAutoComplete(input) {
+
+    if (input.includes("/") || input.includes("\\")) {
+      return
+    }
+    else {
+      const { data } = await axios.get(
+        `https://sky-listener.onrender.com${input}`
+      );
+      setAutoComplete(data);
+    }
+  }
+
   async function fetchPlaylist(city) {
-    return await axios.get(`https://sky-listener.onrender.com/get-weather/${city}`);
+    return await axios.get(`https://sky-listener.onrender.com${city}`);
   }
 
   const onSubmit = async (e) => {
@@ -42,6 +67,7 @@ function App() {
         setTitle(data.playlists[0].name);
         setSiconUrl(data.playlists[0].images[0].url);
       }
+      setAutoComplete([]);
     } catch (err) {
       console.log(err.message);
     }
@@ -50,18 +76,21 @@ function App() {
   return (
     <div className="App">
       <h1 className="title">Sky Listener</h1>
-      <form onSubmit={onSubmit} className="form">
-        <input
-          type="text"
-          value={city}
-          onChange={(e) => onChange(e)}
-          className="searchinput"
-          placeholder="Search a City"
-        ></input>
-        <button type="submit" className="searchbutton">
-          <img src={search_icon}></img>
-        </button>
-      </form>
+      <div className="search-bar-container">
+        <form onSubmit={onSubmit} className="form">
+          <input
+            type="text"
+            value={city}
+            onChange={(e) => onChange(e)}
+            className="searchinput"
+            placeholder="Search a City"
+          ></input>
+          <button type="submit" className="searchbutton">
+            <i className="fa-solid fa-magnifying-glass" id="search-icon"></i>
+          </button>
+        </form>
+        {autoComplete && autoComplete.length > 0 && city && <SearchResultsList autoComplete={autoComplete} selectResult={selectResult} />}
+      </div>
       <div className="error">{error}</div>
       {temp === "" ? (
         <div className="nosearch">
