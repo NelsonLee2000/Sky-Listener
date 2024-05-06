@@ -38,14 +38,14 @@ function App() {
     }
     else {
       const { data } = await axios.get(
-        `https://sky-listener.onrender.com${input}`
+        `https://sky-listener.onrender.com/auto-complete/${input}`
       );
       setAutoComplete(data);
     }
   }
 
   async function fetchPlaylist(city) {
-    return await axios.get(`https://sky-listener.onrender.com${city}`);
+    return await axios.get(`https://sky-listener.onrender.com/get-weather/${city}`);
   }
 
   const onSubmit = async (e) => {
