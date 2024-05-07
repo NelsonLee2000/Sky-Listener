@@ -4,9 +4,9 @@
     margin: 5px;
     display:flex;
     align-items: center;
-    
+    color:#ececec
 }
 
 .search-result:hover {
-    background-color: #efefef;
+    background-color: #272727;
 }

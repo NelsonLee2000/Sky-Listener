@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background: linear-gradient(to top, #87CEEB, #55d4ff);
+    background: rgb(27, 27, 27);
     height: 100vh;
     justify-content: center;
     align-items: center;
